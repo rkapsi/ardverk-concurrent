@@ -22,8 +22,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.ardverk.lang.NullArgumentException;
-
 /**
  * A default implementation of {@link AsyncFuture}.
  */
@@ -76,7 +74,7 @@ public class AsyncValueFuture<V> implements AsyncFuture<V> {
     @Override
     public void addAsyncFutureListener(AsyncFutureListener<V> listener) {
         if (listener == null) {
-            throw new NullArgumentException("listener");
+            throw new NullPointerException("listener");
         }
         
         boolean done = false;
@@ -112,7 +110,7 @@ public class AsyncValueFuture<V> implements AsyncFuture<V> {
     @Override
     public synchronized void removeAsyncFutureListener(AsyncFutureListener<V> listener) {
         if (listener == null) {
-            throw new NullArgumentException("listener");
+            throw new NullPointerException("listener");
         }
         
         if (first == listener) {

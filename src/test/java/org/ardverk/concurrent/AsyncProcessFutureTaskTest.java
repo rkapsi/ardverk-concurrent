@@ -25,7 +25,6 @@ import java.util.concurrent.TimeoutException;
 
 import junit.framework.TestCase;
 
-import org.ardverk.lang.ExceptionUtils;
 import org.junit.Test;
 
 public class AsyncProcessFutureTaskTest {

@@ -18,6 +18,7 @@ package org.ardverk.concurrent;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.SynchronousQueue;
@@ -121,6 +122,15 @@ public class ExecutorUtils {
                 frequency, unit);
     }
 
+    /**
+     * Returns the default {@link ThreadFactory}.
+     * 
+     * @see Executors#defaultThreadFactory()
+     */
+    public static ThreadFactory defaultThreadFactory() {
+        return Executors.defaultThreadFactory();
+    }
+    
     /**
      * Creates and returns a {@link ThreadFactory} which creates 
      * {@link Thread}s that are pre-fixed with the given name.

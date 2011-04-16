@@ -20,10 +20,6 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.ardverk.lang.Arguments;
-import org.ardverk.lang.ExceptionUtils;
-import org.ardverk.lang.NullArgumentException;
-
 /**
  * The {@link AsyncExchanger} is an one-way synchronization point for 
  * {@link Thread}s. One or more {@link Thread}s can wait for the arrival 
@@ -63,7 +59,11 @@ public class AsyncExchanger<V, E extends Throwable> {
      * Creates an {@link AsyncExchanger} that uses the given lock Object
      */
     public AsyncExchanger(Object lock) {
-        this.lock = Arguments.notNull((lock != THIS) ? lock : this, "lock");
+        if (lock == null) {
+            throw new NullPointerException("lock");
+        }
+        
+        this.lock = (lock != THIS) ? lock : this;
     }
     
     /**
@@ -204,7 +204,7 @@ public class AsyncExchanger<V, E extends Throwable> {
      */
     public boolean setException(E exception) {
         if (exception == null) {
-            throw new NullArgumentException("exception");
+            throw new NullPointerException("exception");
         }
         
         synchronized (lock) {

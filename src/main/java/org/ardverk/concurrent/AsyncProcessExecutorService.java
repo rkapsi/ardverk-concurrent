@@ -22,8 +22,8 @@ import java.util.concurrent.TimeUnit;
  * @see AsyncExecutorService
  * @see AsyncProcessExecutor
  */
-public interface AsyncProcessExecutorService 
-        extends AsyncExecutorService, AsyncProcessExecutor {
+public interface AsyncProcessExecutorService extends AsyncProcessSubmitService, 
+        AsyncExecutorService, AsyncProcessExecutor {
 
     /**
      * Sets the default timeout for {@link #submit(AsyncProcess)}
@@ -40,18 +40,4 @@ public interface AsyncProcessExecutorService
      * in milliseconds.
      */
     public long getTimeoutInMillis();
-    
-    /**
-     * Submits the given {@link AsyncProcess} for execution.
-     * 
-     * @see #getTimeout(TimeUnit)
-     * @see #setTimeout(long, TimeUnit)
-     */
-    public <T> AsyncProcessFuture<T> submit(AsyncProcess<T> process);
-    
-    /**
-     * Submits the given {@link AsyncProcess} for execution.
-     */
-    public <T> AsyncProcessFuture<T> submit(AsyncProcess<T> process, 
-            long timeout, TimeUnit unit);
 }

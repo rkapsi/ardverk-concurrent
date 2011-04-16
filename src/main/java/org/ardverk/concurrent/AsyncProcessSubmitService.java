@@ -16,16 +16,18 @@
 
 package org.ardverk.concurrent;
 
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
-/**
- * An {@link AsyncExecutor} that provides methods to manage termination and
- * methods that can produce an {@link AsyncFuture} for tracking progress of
- * one or more asynchronous tasks.
- * 
- * @see AsyncExecutor
- * @see ExecutorService
- */
-public interface AsyncExecutorService extends AsyncExecutor, 
-        SubmitService, ExecutorService, Shutdownable<Runnable> {
+public interface AsyncProcessSubmitService extends SubmitService {
+
+    /**
+     * Submits the given {@link AsyncProcess} for execution.
+     */
+    public <T> AsyncFuture<T> submit(AsyncProcess<T> process);
+    
+    /**
+     * Submits the given {@link AsyncProcess} for execution.
+     */
+    public <T> AsyncFuture<T> submit(AsyncProcess<T> process, 
+            long timeout, TimeUnit unit);
 }

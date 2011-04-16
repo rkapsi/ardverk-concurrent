@@ -19,8 +19,6 @@ package org.ardverk.concurrent;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.ardverk.lang.NullArgumentException;
-
 /**
  * A very simple implementation of {@link ThreadFactory}.
  */
@@ -38,7 +36,7 @@ public class DefaultThreadFactory implements ThreadFactory {
     
     public DefaultThreadFactory(String name, boolean daemon) {
         if (name == null) {
-            throw new NullArgumentException("name");
+            throw new NullPointerException("name");
         }
         
         this.name = name;

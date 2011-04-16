@@ -21,8 +21,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.ardverk.lang.NullArgumentException;
-
 /**
  * A cancellable asynchronous computation. This class provides a base
  * implementation of {@link AsyncFuture}, with methods to start and 
@@ -68,7 +66,7 @@ public class AsyncFutureTask<V> extends AsyncValueFuture<V>
      */
     public AsyncFutureTask(Callable<V> callable) {
         if (callable == null) {
-            throw new NullArgumentException("callable");
+            throw new NullPointerException("callable");
         }
         
         this.callable = callable;

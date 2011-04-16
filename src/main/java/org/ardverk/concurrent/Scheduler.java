@@ -16,16 +16,13 @@
 
 package org.ardverk.concurrent;
 
-import java.util.concurrent.ExecutorService;
-
 /**
- * An {@link AsyncExecutor} that provides methods to manage termination and
- * methods that can produce an {@link AsyncFuture} for tracking progress of
- * one or more asynchronous tasks.
  * 
- * @see AsyncExecutor
- * @see ExecutorService
  */
-public interface AsyncExecutorService extends AsyncExecutor, 
-        SubmitService, ExecutorService, Shutdownable<Runnable> {
+public interface Scheduler {
+   
+    /**
+     * 
+     */
+    public boolean doNext(DefaultExecutorQueue group, int index, long timeStamp);
 }

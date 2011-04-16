@@ -16,33 +16,36 @@
 
 package org.ardverk.concurrent;
 
+import java.util.Queue;
+import java.util.concurrent.Executor;
 
 /**
- * A {@link ManagedRunnable} catches all {@link Exception}s and delegates
- * them to {@link #exceptionCaught(Throwable)}.
- * 
- * @see Runnable
+ * An {@link ExecutorQueue} is a special purpose {@link Executor}
  */
-public abstract class ManagedRunnable implements Runnable {
+public interface ExecutorQueue<T extends Runnable> extends Shutdownable<T> {
 
-    @Override
-    public final void run() {
-        try {
-            doRun();
-        } catch (Exception err) {
-            exceptionCaught(err);
-        }
-    }
+    /**
+     * Returns the {@link ExecutorQueue}'s {@link Executor}.
+     */
+    public Executor getExecutor();
     
     /**
-     * See {@link Runnable#run()}
+     * Returns the {@link ExecutorQueue}'s {@link Queue}.
      */
-    protected abstract void doRun() throws Exception;
+    public Queue<T> getQueue();
     
     /**
-     * 
+     * Returns the number of elements in the {@link ExecutorQueue}
      */
-    protected void exceptionCaught(Throwable t) {
-        ExceptionUtils.exceptionCaught(t);
-    }
+    public int size();
+    
+    /**
+     * Returns true if the {@link ExecutorQueue} is empty.
+     */
+    public boolean isEmpty();
+    
+    /**
+     * Executes the given task.
+     */
+    public void execute(T task);
 }
