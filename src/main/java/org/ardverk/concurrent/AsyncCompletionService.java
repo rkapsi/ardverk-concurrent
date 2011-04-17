@@ -38,7 +38,7 @@ public class AsyncCompletionService {
      * Creates and returns an {@link AsyncFuture} that will fire an event when 
      * the given {@link AsyncFuture}s are complete.
      */
-    public static <V, T extends Iterable<AsyncFuture<? extends V>>> AsyncFuture<T> create(T futures) {
+    public static <V, T extends Iterable<? extends AsyncFuture<? extends V>>> AsyncFuture<T> create(T futures) {
         return create(futures, futures);
     }
     
