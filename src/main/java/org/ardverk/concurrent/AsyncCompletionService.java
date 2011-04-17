@@ -27,42 +27,41 @@ public class AsyncCompletionService {
     private AsyncCompletionService() {}
     
     /**
-     * 
+     * Creates and returns an {@link AsyncFuture} that will fire an event when 
+     * the given {@link AsyncFuture}s are complete.
      */
-    public static <V, T extends AsyncFuture<V>> AsyncFuture<T[]> create(final T... futures) {
-        return create(Arrays.asList(futures), new ValueFactory<T[]>() {
-            @Override
-            public T[] create() {
-                return futures;
-            }
-        });
+    public static <V, T extends AsyncFuture<? extends V>> AsyncFuture<T[]> create(T... futures) {
+        return create(Arrays.asList(futures), futures);
     }
     
     /**
-     * 
+     * Creates and returns an {@link AsyncFuture} that will fire an event when 
+     * the given {@link AsyncFuture}s are complete.
      */
-    public static <V, T extends Iterable<AsyncFuture<V>>> AsyncFuture<T> create(final T futures) {
-        return create(futures, new ValueFactory<T>() {
-            @Override
-            public T create() {
-                return futures;
-            }
-        });
+    public static <V, T extends Iterable<AsyncFuture<? extends V>>> AsyncFuture<T> create(T futures) {
+        return create(futures, futures);
     }
     
-    private static <V, T> AsyncFuture<T> create(Iterable<? extends AsyncFuture<V>> futures, final ValueFactory<T> factory) {
+    /**
+     * Creates and returns an {@link AsyncFuture} that will fire an event when 
+     * the given {@link AsyncFuture}s are complete.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> AsyncFuture<T> create(
+            Iterable<? extends AsyncFuture<?>> futures, final T value) {
         final Object lock = new Object();
         synchronized (lock) {
             final AsyncFuture<T> dst = new AsyncValueFuture<T>();
             
             final AtomicInteger counter = new AtomicInteger();
-            AsyncFutureListener<V> listener = new AsyncFutureListener<V>() {
+            AsyncFutureListener<Object> listener 
+                    = new AsyncFutureListener<Object>() {
                 @Override
-                public void operationComplete(AsyncFuture<V> future) {
+                public void operationComplete(AsyncFuture<Object> future) {
                     synchronized (lock) {
                         if (counter.decrementAndGet() == 0) {
                             try {
-                                dst.setValue(factory.create());
+                                dst.setValue(value);
                             } catch (Throwable err) {
                                 dst.setException(err);
                             }
@@ -71,14 +70,14 @@ public class AsyncCompletionService {
                 }
             };
             
-            for (AsyncFuture<V> future : futures) {
-                future.addAsyncFutureListener(listener);
+            for (AsyncFuture<?> future : futures) {
+                ((AsyncFuture<Object>)future).addAsyncFutureListener(listener);
                 counter.incrementAndGet();
             }
             
             if (counter.get() == 0) {
                 try {
-                    dst.setValue(factory.create());
+                    dst.setValue(value);
                 } catch (Throwable err) {
                     dst.setException(err);
                 }
@@ -86,9 +85,5 @@ public class AsyncCompletionService {
             
             return dst;
         }
-    }
-    
-    private static interface ValueFactory<T> {
-        public T create();
     }
 }
