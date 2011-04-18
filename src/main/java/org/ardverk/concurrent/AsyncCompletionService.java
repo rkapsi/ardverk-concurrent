@@ -30,6 +30,22 @@ public class AsyncCompletionService {
      * Creates and returns an {@link AsyncFuture} that will fire an event when 
      * the given {@link AsyncFuture}s are complete.
      */
+    public static AsyncFuture<Void> createVoid(AsyncFuture<?>... futures) {
+        return createVoid(Arrays.asList(futures));
+    }
+    
+    /**
+     * Creates and returns an {@link AsyncFuture} that will fire an event when 
+     * the given {@link AsyncFuture}s are complete.
+     */
+    public static AsyncFuture<Void> createVoid(Iterable<? extends AsyncFuture<?>> futures) {
+        return create(futures, null);
+    }
+    
+    /**
+     * Creates and returns an {@link AsyncFuture} that will fire an event when 
+     * the given {@link AsyncFuture}s are complete.
+     */
     public static <V, T extends AsyncFuture<? extends V>> AsyncFuture<T[]> create(T... futures) {
         return create(Arrays.asList(futures), futures);
     }
