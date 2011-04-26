@@ -71,7 +71,14 @@ public class ExecutorUtils {
      * Creates and returns a {@link ThreadPoolExecutor}
      */
     public static AsyncProcessThreadPoolExecutor newCachedThreadPool(String name) {
-        return newCachedThreadPool(name, purgeFrequency(), TimeUnit.MILLISECONDS);
+        return newCachedThreadPool(defaultThreadFactory(name));
+    }
+    
+    /**
+     * Creates and returns a {@link ThreadPoolExecutor}
+     */
+    public static AsyncProcessThreadPoolExecutor newCachedThreadPool(ThreadFactory factory) {
+        return newCachedThreadPool(factory, purgeFrequency(), TimeUnit.MILLISECONDS);
     }
     
     /**
@@ -79,11 +86,19 @@ public class ExecutorUtils {
      */
     public static AsyncProcessThreadPoolExecutor newCachedThreadPool(String name, 
             long frequency, TimeUnit unit) {
+        return newCachedThreadPool(defaultThreadFactory(name), frequency, unit);
+    }
+    
+    /**
+     * Creates and returns a {@link ThreadPoolExecutor}
+     */
+    public static AsyncProcessThreadPoolExecutor newCachedThreadPool(ThreadFactory factory, 
+            long frequency, TimeUnit unit) {
         
         return new AsyncProcessThreadPoolExecutor(0, Integer.MAX_VALUE,
                 60L, TimeUnit.SECONDS,
                 new SynchronousQueue<Runnable>(), 
-                defaultThreadFactory(name),
+                factory,
                 frequency, unit);
     }
     
@@ -91,7 +106,14 @@ public class ExecutorUtils {
      * Creates and returns a {@link ThreadPoolExecutor}
      */
     public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(String name) {
-        return newSingleThreadExecutor(name, purgeFrequency(), TimeUnit.MILLISECONDS);
+        return newSingleThreadExecutor(defaultThreadFactory(name));
+    }
+    
+    /**
+     * Creates and returns a {@link ThreadPoolExecutor}
+     */
+    public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(ThreadFactory factory) {
+        return newSingleThreadExecutor(factory, purgeFrequency(), TimeUnit.MILLISECONDS);
     }
     
     /**
@@ -99,14 +121,29 @@ public class ExecutorUtils {
      */
     public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(
             String name, long frequency, TimeUnit unit) {
-        return newFixedThreadPool(1, name, frequency, unit);
+        return newSingleThreadExecutor(defaultThreadFactory(name), frequency, unit);
+    }
+    
+    /**
+     * Creates and returns a {@link ThreadPoolExecutor}
+     */
+    public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(
+            ThreadFactory factory, long frequency, TimeUnit unit) {
+        return newFixedThreadPool(1, factory, frequency, unit);
     }
     
     /**
      * Creates and returns a {@link ThreadPoolExecutor}
      */
     public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, String name) {
-        return newFixedThreadPool(nThreads, name, purgeFrequency(), TimeUnit.MILLISECONDS);
+        return newFixedThreadPool(nThreads, defaultThreadFactory(name));
+    }
+    
+    /**
+     * Creates and returns a {@link ThreadPoolExecutor}
+     */
+    public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, ThreadFactory factory) {
+        return newFixedThreadPool(nThreads, factory, purgeFrequency(), TimeUnit.MILLISECONDS);
     }
     
     /**
@@ -114,11 +151,19 @@ public class ExecutorUtils {
      */
     public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, 
             String name, long frequency, TimeUnit unit) {
+        return newFixedThreadPool(nThreads, defaultThreadFactory(name), frequency, unit);
+    }
+    
+    /**
+     * Creates and returns a {@link ThreadPoolExecutor}
+     */
+    public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, 
+            ThreadFactory factory, long frequency, TimeUnit unit) {
         
         return new AsyncProcessThreadPoolExecutor(nThreads, nThreads,
                 0L, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<Runnable>(), 
-                defaultThreadFactory(name),
+                factory,
                 frequency, unit);
     }
 
