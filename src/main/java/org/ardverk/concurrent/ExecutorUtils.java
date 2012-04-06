@@ -1,11 +1,11 @@
 /*
- * Copyright 2010-2011 Roger Kapsi
+ * Copyright 2010-2012 Roger Kapsi
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  *   Unless required by applicable law or agreed to in writing, software
  *   distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,213 +31,213 @@ import java.util.concurrent.TimeUnit;
  * {@link ThreadPoolExecutor}s.
  */
 public class ExecutorUtils {
+  
+  private ExecutorUtils() {}
+  
+  /**
+   * Creates and returns a {@link ScheduledThreadPoolExecutor}
+   */
+  public static ScheduledThreadPoolExecutor newSingleThreadScheduledExecutor(String name) {
+    return newSingleThreadScheduledExecutor(name, purgeFrequency(), TimeUnit.MILLISECONDS);
+  }
+  
+  /**
+   * Creates and returns a {@link ScheduledThreadPoolExecutor}
+   */
+  public static ScheduledThreadPoolExecutor newSingleThreadScheduledExecutor(
+      String name, long frequency, TimeUnit unit) {
+    return newScheduledThreadPool(1, name, frequency, unit);
+  }
+  
+  /**
+   * Creates and returns a {@link ScheduledThreadPoolExecutor}
+   */
+  public static ScheduledThreadPoolExecutor newScheduledThreadPool(
+      int corePoolSize, String name) {
+    return newScheduledThreadPool(corePoolSize, name, purgeFrequency(), TimeUnit.MILLISECONDS);
+  }
+  
+  /**
+   * Creates and returns a {@link ScheduledThreadPoolExecutor}
+   */
+  public static ScheduledThreadPoolExecutor newScheduledThreadPool(
+      int corePoolSize, String name, long frequency, TimeUnit unit) {
     
-    private ExecutorUtils() {}
-    
-    /**
-     * Creates and returns a {@link ScheduledThreadPoolExecutor}
-     */
-    public static ScheduledThreadPoolExecutor newSingleThreadScheduledExecutor(String name) {
-        return newSingleThreadScheduledExecutor(name, purgeFrequency(), TimeUnit.MILLISECONDS);
-    }
-    
-    /**
-     * Creates and returns a {@link ScheduledThreadPoolExecutor}
-     */
-    public static ScheduledThreadPoolExecutor newSingleThreadScheduledExecutor(
-            String name, long frequency, TimeUnit unit) {
-        return newScheduledThreadPool(1, name, frequency, unit);
-    }
-    
-    /**
-     * Creates and returns a {@link ScheduledThreadPoolExecutor}
-     */
-    public static ScheduledThreadPoolExecutor newScheduledThreadPool(
-            int corePoolSize, String name) {
-        return newScheduledThreadPool(corePoolSize, name, purgeFrequency(), TimeUnit.MILLISECONDS);
-    }
-    
-    /**
-     * Creates and returns a {@link ScheduledThreadPoolExecutor}
-     */
-    public static ScheduledThreadPoolExecutor newScheduledThreadPool(
-            int corePoolSize, String name, long frequency, TimeUnit unit) {
-        
-        return new ManagedScheduledThreadPoolExecutor(corePoolSize, 
-                defaultThreadFactory(name), frequency, unit);
-    }
+    return new ManagedScheduledThreadPoolExecutor(corePoolSize, 
+        defaultThreadFactory(name), frequency, unit);
+  }
 
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newCachedThreadPool(String name) {
-        return newCachedThreadPool(defaultThreadFactory(name));
-    }
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newCachedThreadPool(String name) {
+    return newCachedThreadPool(defaultThreadFactory(name));
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newCachedThreadPool(ThreadFactory factory) {
+    return newCachedThreadPool(factory, purgeFrequency(), TimeUnit.MILLISECONDS);
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newCachedThreadPool(String name, 
+      long frequency, TimeUnit unit) {
+    return newCachedThreadPool(defaultThreadFactory(name), frequency, unit);
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newCachedThreadPool(ThreadFactory factory, 
+      long frequency, TimeUnit unit) {
     
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newCachedThreadPool(ThreadFactory factory) {
-        return newCachedThreadPool(factory, purgeFrequency(), TimeUnit.MILLISECONDS);
-    }
+    return new AsyncProcessThreadPoolExecutor(0, Integer.MAX_VALUE,
+        60L, TimeUnit.SECONDS,
+        new SynchronousQueue<Runnable>(), 
+        factory,
+        frequency, unit);
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(String name) {
+    return newSingleThreadExecutor(defaultThreadFactory(name));
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(ThreadFactory factory) {
+    return newSingleThreadExecutor(factory, purgeFrequency(), TimeUnit.MILLISECONDS);
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(
+      String name, long frequency, TimeUnit unit) {
+    return newSingleThreadExecutor(defaultThreadFactory(name), frequency, unit);
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(
+      ThreadFactory factory, long frequency, TimeUnit unit) {
+    return newFixedThreadPool(1, factory, frequency, unit);
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, String name) {
+    return newFixedThreadPool(nThreads, defaultThreadFactory(name));
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, ThreadFactory factory) {
+    return newFixedThreadPool(nThreads, factory, purgeFrequency(), TimeUnit.MILLISECONDS);
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, 
+      String name, long frequency, TimeUnit unit) {
+    return newFixedThreadPool(nThreads, defaultThreadFactory(name), frequency, unit);
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadPoolExecutor}
+   */
+  public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, 
+      ThreadFactory factory, long frequency, TimeUnit unit) {
     
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newCachedThreadPool(String name, 
-            long frequency, TimeUnit unit) {
-        return newCachedThreadPool(defaultThreadFactory(name), frequency, unit);
-    }
-    
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newCachedThreadPool(ThreadFactory factory, 
-            long frequency, TimeUnit unit) {
-        
-        return new AsyncProcessThreadPoolExecutor(0, Integer.MAX_VALUE,
-                60L, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>(), 
-                factory,
-                frequency, unit);
-    }
-    
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(String name) {
-        return newSingleThreadExecutor(defaultThreadFactory(name));
-    }
-    
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(ThreadFactory factory) {
-        return newSingleThreadExecutor(factory, purgeFrequency(), TimeUnit.MILLISECONDS);
-    }
-    
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(
-            String name, long frequency, TimeUnit unit) {
-        return newSingleThreadExecutor(defaultThreadFactory(name), frequency, unit);
-    }
-    
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newSingleThreadExecutor(
-            ThreadFactory factory, long frequency, TimeUnit unit) {
-        return newFixedThreadPool(1, factory, frequency, unit);
-    }
-    
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, String name) {
-        return newFixedThreadPool(nThreads, defaultThreadFactory(name));
-    }
-    
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, ThreadFactory factory) {
-        return newFixedThreadPool(nThreads, factory, purgeFrequency(), TimeUnit.MILLISECONDS);
-    }
-    
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, 
-            String name, long frequency, TimeUnit unit) {
-        return newFixedThreadPool(nThreads, defaultThreadFactory(name), frequency, unit);
-    }
-    
-    /**
-     * Creates and returns a {@link ThreadPoolExecutor}
-     */
-    public static AsyncProcessThreadPoolExecutor newFixedThreadPool(int nThreads, 
-            ThreadFactory factory, long frequency, TimeUnit unit) {
-        
-        return new AsyncProcessThreadPoolExecutor(nThreads, nThreads,
-                0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(), 
-                factory,
-                frequency, unit);
-    }
+    return new AsyncProcessThreadPoolExecutor(nThreads, nThreads,
+        0L, TimeUnit.MILLISECONDS,
+        new LinkedBlockingQueue<Runnable>(), 
+        factory,
+        frequency, unit);
+  }
 
-    /**
-     * Returns the default {@link ThreadFactory}.
-     * 
-     * @see Executors#defaultThreadFactory()
-     */
-    public static ThreadFactory defaultThreadFactory() {
-        return Executors.defaultThreadFactory();
+  /**
+   * Returns the default {@link ThreadFactory}.
+   * 
+   * @see Executors#defaultThreadFactory()
+   */
+  public static ThreadFactory defaultThreadFactory() {
+    return Executors.defaultThreadFactory();
+  }
+  
+  /**
+   * Creates and returns a {@link ThreadFactory} which creates 
+   * {@link Thread}s that are pre-fixed with the given name.
+   */
+  public static ThreadFactory defaultThreadFactory(String name) {
+    return new DefaultThreadFactory(name);
+  }
+  
+  /**
+   * Tries to shutdown the given {@link Executor}.
+   */
+  public static boolean shutdown(Executor executor) {
+    if (executor != null) {
+      if (executor instanceof ExecutorService) {
+        ((ExecutorService)executor).shutdown();
+      } else if (executor instanceof Shutdownable<?>) {
+        ((Shutdownable<?>)executor).shutdown();
+      }
+      return true;
+    }
+    return false;
+  }
+  
+  /**
+   * Tries to shutdown the given {@link Executor}s.
+   */
+  public static boolean shutdownAll(Executor... executors) {
+    boolean success = true;
+    if (executors != null) {
+      for (Executor executor : executors) {
+        success &= shutdown(executor);
+      }
+    }
+    return success;
+  }
+  
+  /**
+   * Tries to shutdown the given {@link Executor}s.
+   */
+  public static boolean shutdownAll(Iterable<? extends Executor> executors) {
+    boolean success = true;
+    if (executors != null) {
+      for (Executor executor : executors) {
+        success &= shutdown(executor);
+      }
+    }
+    return success;
+  }
+  
+  private static long purgeFrequency() {
+    return purgeFrequency(30L, TimeUnit.SECONDS);
+  }
+  
+  private static long purgeFrequency(long defaultValue, TimeUnit unit) {
+    Class<?> clazz = ExecutorUtils.class;
+    String key = clazz.getCanonicalName() + ".purgeFrequency";
+    
+    String value = System.getProperty(key);
+    if (value != null) {
+      return Long.parseLong(value);
     }
     
-    /**
-     * Creates and returns a {@link ThreadFactory} which creates 
-     * {@link Thread}s that are pre-fixed with the given name.
-     */
-    public static ThreadFactory defaultThreadFactory(String name) {
-        return new DefaultThreadFactory(name);
-    }
-    
-    /**
-     * Tries to shutdown the given {@link Executor}.
-     */
-    public static boolean shutdown(Executor executor) {
-        if (executor != null) {
-            if (executor instanceof ExecutorService) {
-                ((ExecutorService)executor).shutdown();
-            } else if (executor instanceof Shutdownable<?>) {
-                ((Shutdownable<?>)executor).shutdown();
-            }
-            return true;
-        }
-        return false;
-    }
-    
-    /**
-     * Tries to shutdown the given {@link Executor}s.
-     */
-    public static boolean shutdownAll(Executor... executors) {
-        boolean success = true;
-        if (executors != null) {
-            for (Executor executor : executors) {
-                success &= shutdown(executor);
-            }
-        }
-        return success;
-    }
-    
-    /**
-     * Tries to shutdown the given {@link Executor}s.
-     */
-    public static boolean shutdownAll(Iterable<? extends Executor> executors) {
-        boolean success = true;
-        if (executors != null) {
-            for (Executor executor : executors) {
-                success &= shutdown(executor);
-            }
-        }
-        return success;
-    }
-    
-    private static long purgeFrequency() {
-        return purgeFrequency(30L, TimeUnit.SECONDS);
-    }
-    
-    private static long purgeFrequency(long defaultValue, TimeUnit unit) {
-        Class<?> clazz = ExecutorUtils.class;
-        String key = clazz.getCanonicalName() + ".purgeFrequency";
-        
-        String value = System.getProperty(key);
-        if (value != null) {
-            return Long.parseLong(value);
-        }
-        
-        return unit.toMillis(defaultValue);
-    }
+    return unit.toMillis(defaultValue);
+  }
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright 2010-2011 Roger Kapsi
+ * Copyright 2010-2012 Roger Kapsi
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  *   Unless required by applicable law or agreed to in writing, software
  *   distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,28 +26,28 @@ import java.util.concurrent.Future;
  * @see Future
  */
 public interface AsyncFuture<V> extends AsyncFutureListenerService<V>, Future<V>, Cancellable {
-    
-    /**
-     * Sets the value of the {@link AsyncFuture}
-     */
-    public boolean setValue(V value);
-    
-    /**
-     * Sets the {@link Exception} of the {@link AsyncFuture}
-     */
-    public boolean setException(Throwable t);
-    
-    /**
-     * A non-blocking version of the {@link #get()} method. It returns
-     * either null if the {@link AsyncFuture} is not done yet or the
-     * value and throws an {@link Exception} respectively.
-     */
-    public V tryGet() throws InterruptedException, ExecutionException;
-    
-    /**
-     * Returns true if the {@link AsyncFuture} is done and completed 
-     * abnormally and a subsequent {@link #get()} call will throw 
-     * an {@link Exception}.
-     */
-    public boolean isCompletedAbnormally();
+  
+  /**
+   * Sets the value of the {@link AsyncFuture}
+   */
+  public boolean setValue(V value);
+  
+  /**
+   * Sets the {@link Exception} of the {@link AsyncFuture}
+   */
+  public boolean setException(Throwable t);
+  
+  /**
+   * A non-blocking version of the {@link #get()} method. It returns
+   * either null if the {@link AsyncFuture} is not done yet or the
+   * value and throws an {@link Exception} respectively.
+   */
+  public V tryGet() throws InterruptedException, ExecutionException;
+  
+  /**
+   * Returns true if the {@link AsyncFuture} is done and completed 
+   * abnormally and a subsequent {@link #get()} call will throw 
+   * an {@link Exception}.
+   */
+  public boolean isCompletedAbnormally();
 }

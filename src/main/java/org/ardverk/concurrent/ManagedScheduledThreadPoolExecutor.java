@@ -1,11 +1,11 @@
 /*
- * Copyright 2010-2011 Roger Kapsi
+ * Copyright 2010-2012 Roger Kapsi
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  *   Unless required by applicable law or agreed to in writing, software
  *   distributed under the License is distributed on an "AS IS" BASIS,
@@ -30,59 +30,59 @@ import java.util.concurrent.TimeUnit;
  * @see ManagedScheduledExecutorService
  */
 public class ManagedScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor 
-        implements ManagedScheduledExecutorService {
+    implements ManagedScheduledExecutorService {
 
-    private final ScheduledFuture<?> future;
-    
-    public ManagedScheduledThreadPoolExecutor(int corePoolSize,
-            RejectedExecutionHandler handler,
-            long frequency, TimeUnit unit) {
-        super(corePoolSize, handler);
-        this.future = createPurgeTask(frequency, unit);
-    }
+  private final ScheduledFuture<?> future;
+  
+  public ManagedScheduledThreadPoolExecutor(int corePoolSize,
+      RejectedExecutionHandler handler,
+      long frequency, TimeUnit unit) {
+    super(corePoolSize, handler);
+    this.future = createPurgeTask(frequency, unit);
+  }
 
-    public ManagedScheduledThreadPoolExecutor(int corePoolSize,
-            ThreadFactory threadFactory, RejectedExecutionHandler handler,
-            long frequency, TimeUnit unit) {
-        super(corePoolSize, threadFactory, handler);
-        this.future = createPurgeTask(frequency, unit);
-    }
+  public ManagedScheduledThreadPoolExecutor(int corePoolSize,
+      ThreadFactory threadFactory, RejectedExecutionHandler handler,
+      long frequency, TimeUnit unit) {
+    super(corePoolSize, threadFactory, handler);
+    this.future = createPurgeTask(frequency, unit);
+  }
 
-    public ManagedScheduledThreadPoolExecutor(int corePoolSize,
-            ThreadFactory threadFactory,
-            long frequency, TimeUnit unit) {
-        super(corePoolSize, threadFactory);
-        this.future = createPurgeTask(frequency, unit);
-    }
+  public ManagedScheduledThreadPoolExecutor(int corePoolSize,
+      ThreadFactory threadFactory,
+      long frequency, TimeUnit unit) {
+    super(corePoolSize, threadFactory);
+    this.future = createPurgeTask(frequency, unit);
+  }
 
-    public ManagedScheduledThreadPoolExecutor(int corePoolSize, 
-            long frequency, TimeUnit unit) {
-        super(corePoolSize);
-        this.future = createPurgeTask(frequency, unit);
-    }
-    
-    private ScheduledFuture<?> createPurgeTask(long frequency, TimeUnit unit) {
-        if (frequency != -1L) {
-            
-            Runnable task = new ManagedRunnable() {
-                @Override
-                protected void doRun() {
-                    purge();
-                }
-            };
-            
-            return scheduleWithFixedDelay(
-                    task, frequency, frequency, unit);
+  public ManagedScheduledThreadPoolExecutor(int corePoolSize, 
+      long frequency, TimeUnit unit) {
+    super(corePoolSize);
+    this.future = createPurgeTask(frequency, unit);
+  }
+  
+  private ScheduledFuture<?> createPurgeTask(long frequency, TimeUnit unit) {
+    if (frequency != -1L) {
+      
+      Runnable task = new ManagedRunnable() {
+        @Override
+        protected void doRun() {
+          purge();
         }
-        return null;
+      };
+      
+      return scheduleWithFixedDelay(
+          task, frequency, frequency, unit);
+    }
+    return null;
+  }
+  
+  @Override
+  protected void terminated() {
+    if (future != null) {
+      future.cancel(true);
     }
     
-    @Override
-    protected void terminated() {
-        if (future != null) {
-            future.cancel(true);
-        }
-        
-        super.terminated();
-    }
+    super.terminated();
+  }
 }

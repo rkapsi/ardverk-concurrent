@@ -1,11 +1,11 @@
 /*
- * Copyright 2010-2011 Roger Kapsi
+ * Copyright 2010-2012 Roger Kapsi
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  *   Unless required by applicable law or agreed to in writing, software
  *   distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,33 +24,33 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class DefaultThreadFactory implements ThreadFactory {
 
-    private final AtomicInteger counter = new AtomicInteger();
-    
-    private final String name;
-    
-    private final boolean daemon;
-    
-    public DefaultThreadFactory(String name) {
-        this(name, false);
+  private final AtomicInteger counter = new AtomicInteger();
+  
+  private final String name;
+  
+  private final boolean daemon;
+  
+  public DefaultThreadFactory(String name) {
+    this(name, false);
+  }
+  
+  public DefaultThreadFactory(String name, boolean daemon) {
+    if (name == null) {
+      throw new NullPointerException("name");
     }
     
-    public DefaultThreadFactory(String name, boolean daemon) {
-        if (name == null) {
-            throw new NullPointerException("name");
-        }
-        
-        this.name = name;
-        this.daemon = daemon;
-    }
-    
-    private String createName() {
-        return name + "-" + counter.incrementAndGet();
-    }
-    
-    @Override
-    public Thread newThread(Runnable r) {
-        Thread thread = new Thread(r, createName());
-        thread.setDaemon(daemon);
-        return thread;
-    }
+    this.name = name;
+    this.daemon = daemon;
+  }
+  
+  private String createName() {
+    return name + "-" + counter.incrementAndGet();
+  }
+  
+  @Override
+  public Thread newThread(Runnable r) {
+    Thread thread = new Thread(r, createName());
+    thread.setDaemon(daemon);
+    return thread;
+  }
 }

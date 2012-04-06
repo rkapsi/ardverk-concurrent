@@ -1,11 +1,11 @@
 /*
- * Copyright 2010-2011 Roger Kapsi
+ * Copyright 2010-2012 Roger Kapsi
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
  *   you may not use this file except in compliance with the License.
  *   You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  *   Unless required by applicable law or agreed to in writing, software
  *   distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,28 +24,28 @@ import java.util.concurrent.Executor;
  */
 public interface ExecutorQueue<T extends Runnable> extends Shutdownable<T> {
 
-    /**
-     * Returns the {@link ExecutorQueue}'s {@link Executor}.
-     */
-    public Executor getExecutor();
-    
-    /**
-     * Returns the {@link ExecutorQueue}'s {@link Queue}.
-     */
-    public Queue<T> getQueue();
-    
-    /**
-     * Returns the number of elements in the {@link ExecutorQueue}
-     */
-    public int size();
-    
-    /**
-     * Returns true if the {@link ExecutorQueue} is empty.
-     */
-    public boolean isEmpty();
-    
-    /**
-     * Executes the given task.
-     */
-    public void execute(T task);
+  /**
+   * Returns the {@link ExecutorQueue}'s {@link Executor}.
+   */
+  public Executor getExecutor();
+  
+  /**
+   * Returns the {@link ExecutorQueue}'s {@link Queue}.
+   */
+  public Queue<T> getQueue();
+  
+  /**
+   * Returns the number of elements in the {@link ExecutorQueue}
+   */
+  public int size();
+  
+  /**
+   * Returns true if the {@link ExecutorQueue} is empty.
+   */
+  public boolean isEmpty();
+  
+  /**
+   * Executes the given task.
+   */
+  public void execute(T task);
 }
