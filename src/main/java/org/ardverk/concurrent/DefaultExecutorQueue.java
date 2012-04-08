@@ -125,8 +125,7 @@ public class DefaultExecutorQueue extends AbstractExecutorQueue<Runnable> implem
     if (open) {
       open = false;
       
-      List<Runnable> copy 
-        = new ArrayList<Runnable>(queue);
+      List<Runnable> copy = new ArrayList<>(queue);
       queue.clear();
       
       if (!closed && !scheduled) {

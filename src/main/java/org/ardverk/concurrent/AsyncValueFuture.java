@@ -84,7 +84,7 @@ public class AsyncValueFuture<V> implements AsyncFuture<V> {
       
       if (done) {
         if (after == null) {
-          after = new ArrayList<AsyncFutureListener<V>>();
+          after = new ArrayList<>();
         }
         
         after.add(listener);
@@ -94,7 +94,7 @@ public class AsyncValueFuture<V> implements AsyncFuture<V> {
           first = listener;
         } else {
           if (before == null) {
-            before = new ArrayList<AsyncFutureListener<V>>();
+            before = new ArrayList<>();
           }
           
           before.add(listener);
@@ -103,7 +103,7 @@ public class AsyncValueFuture<V> implements AsyncFuture<V> {
     }
     
     if (done) {
-      fireOperationComplete(listener);
+      fireOperationComplete(listener, (AsyncFutureListener<V>[])null);
     }
   }
 
@@ -135,8 +135,7 @@ public class AsyncValueFuture<V> implements AsyncFuture<V> {
   @SuppressWarnings("unchecked")
   @Override
   public synchronized AsyncFutureListener<V>[] getAsyncFutureListeners() {
-    List<AsyncFutureListener<V>> listeners 
-      = new ArrayList<AsyncFutureListener<V>>();
+    List<AsyncFutureListener<V>> listeners = new ArrayList<>();
     
     if (first != null) {
       listeners.add(first);
@@ -290,13 +289,13 @@ public class AsyncValueFuture<V> implements AsyncFuture<V> {
    * {@link #addAsyncFutureListener(AsyncFutureListener)}
    */
   protected void fireOperationComplete(AsyncFutureListener<V> first, 
-      AsyncFutureListener<V>... others) {
+      @SuppressWarnings("unchecked") AsyncFutureListener<V>... others) {
     
     if (first != null) {
       first.operationComplete(this);
     }
     
-    if (others != null) {
+    if (others != null && 0 < others.length) {
       for (AsyncFutureListener<V> l : others) {
         l.operationComplete(this);
       }

@@ -46,6 +46,7 @@ public class AsyncCompletionService {
    * Creates and returns an {@link AsyncFuture} that will fire an event when 
    * the given {@link AsyncFuture}s are complete.
    */
+  @SafeVarargs
   public static <V, T extends AsyncFuture<? extends V>> AsyncFuture<T[]> create(T... futures) {
     return create(Arrays.asList(futures), futures);
   }
